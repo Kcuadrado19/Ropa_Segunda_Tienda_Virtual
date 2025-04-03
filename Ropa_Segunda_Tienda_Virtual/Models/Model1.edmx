@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBExamenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="80" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Celular" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="FotoPrenda">
+          <Key>
+            <PropertyRef Name="idFoto" />
+          </Key>
+          <Property Name="idFoto" Type="int" Nullable="false" />
+          <Property Name="FotoPrenda" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="idPrenda" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prenda">
+          <Key>
+            <PropertyRef Name="IdPrenda" />
+          </Key>
+          <Property Name="IdPrenda" Type="int" Nullable="false" />
+          <Property Name="TipoPrenda" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="90" Nullable="false" />
+          <Property Name="Valor" Type="real" Nullable="false" />
+          <Property Name="Cliente" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_FotoPrenda_Prenda">
+          <End Role="Prenda" Type="Self.Prenda" Multiplicity="1" />
+          <End Role="FotoPrenda" Type="Self.FotoPrenda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prenda">
+              <PropertyRef Name="IdPrenda" />
+            </Principal>
+            <Dependent Role="FotoPrenda">
+              <PropertyRef Name="idPrenda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Prenda_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Prenda" Type="Self.Prenda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Documento" />
+            </Principal>
+            <Dependent Role="Prenda">
+              <PropertyRef Name="Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBExamenModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FotoPrenda" EntityType="Self.FotoPrenda" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prenda" EntityType="Self.Prenda" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FotoPrenda_Prenda" Association="Self.FK_FotoPrenda_Prenda">
+            <End Role="Prenda" EntitySet="Prenda" />
+            <End Role="FotoPrenda" EntitySet="FotoPrenda" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Prenda_Cliente" Association="Self.FK_Prenda_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Prenda" EntitySet="Prenda" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBExamenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Prendas" Relationship="Self.FK_Prenda_Cliente" FromRole="Cliente" ToRole="Prenda" />
+        </EntityType>
+        <EntityType Name="FotoPrenda">
+          <Key>
+            <PropertyRef Name="idFoto" />
+          </Key>
+          <Property Name="idFoto" Type="Int32" Nullable="false" />
+          <Property Name="FotoPrenda1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idPrenda" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prenda" Relationship="Self.FK_FotoPrenda_Prenda" FromRole="FotoPrenda" ToRole="Prenda" />
+        </EntityType>
+        <EntityType Name="Prenda">
+          <Key>
+            <PropertyRef Name="IdPrenda" />
+          </Key>
+          <Property Name="IdPrenda" Type="Int32" Nullable="false" />
+          <Property Name="TipoPrenda" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="90" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Valor" Type="Single" Nullable="false" />
+          <Property Name="Cliente" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cliente1" Relationship="Self.FK_Prenda_Cliente" FromRole="Prenda" ToRole="Cliente" />
+          <NavigationProperty Name="FotoPrendas" Relationship="Self.FK_FotoPrenda_Prenda" FromRole="Prenda" ToRole="FotoPrenda" />
+        </EntityType>
+        <Association Name="FK_Prenda_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Prenda" Type="Self.Prenda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Documento" />
+            </Principal>
+            <Dependent Role="Prenda">
+              <PropertyRef Name="Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FotoPrenda_Prenda">
+          <End Role="Prenda" Type="Self.Prenda" Multiplicity="1" />
+          <End Role="FotoPrenda" Type="Self.FotoPrenda" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prenda">
+              <PropertyRef Name="IdPrenda" />
+            </Principal>
+            <Dependent Role="FotoPrenda">
+              <PropertyRef Name="idPrenda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBExamenEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="FotoPrendas" EntityType="Self.FotoPrenda" />
+          <EntitySet Name="Prendas" EntityType="Self.Prenda" />
+          <AssociationSet Name="FK_Prenda_Cliente" Association="Self.FK_Prenda_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Prenda" EntitySet="Prendas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FotoPrenda_Prenda" Association="Self.FK_FotoPrenda_Prenda">
+            <End Role="Prenda" EntitySet="Prendas" />
+            <End Role="FotoPrenda" EntitySet="FotoPrendas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBExamenModelStoreContainer" CdmEntityContainer="DBExamenEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="DBExamenModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FotoPrendas">
+            <EntityTypeMapping TypeName="DBExamenModel.FotoPrenda">
+              <MappingFragment StoreEntitySet="FotoPrenda">
+                <ScalarProperty Name="idFoto" ColumnName="idFoto" />
+                <ScalarProperty Name="FotoPrenda1" ColumnName="FotoPrenda" />
+                <ScalarProperty Name="idPrenda" ColumnName="idPrenda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prendas">
+            <EntityTypeMapping TypeName="DBExamenModel.Prenda">
+              <MappingFragment StoreEntitySet="Prenda">
+                <ScalarProperty Name="IdPrenda" ColumnName="IdPrenda" />
+                <ScalarProperty Name="TipoPrenda" ColumnName="TipoPrenda" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
